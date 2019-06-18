@@ -1,7 +1,6 @@
 $("document").ready(function () {
 
-    $("#mainContent").hide();
-
+    
     const clock = $("#cD");
     const correctNum = $("#rightA");
     const incorrectNum = $("#wrongA");
@@ -10,7 +9,8 @@ $("document").ready(function () {
     const mainW = $("#mainContent");
     const results = $("#results");
     const startWindow = $("#start");
-
+    
+    mainW.hide();
 
     jsTrivia = {
         correct: 0,
@@ -32,7 +32,7 @@ $("document").ready(function () {
             q8: "How to write an IF statement in JavaScript?",
         },
         choices: {
-            q1: ['<script>', '<javascript>', '<scripting>', '<js>'],
+            q1: ['script', 'javascript', 'scripting', 'js'],
             q2: ['In the <head> tag', 'In the <body> tag', 'In the <footer> tag', 'Both A or B'],
             q3: ['<script src="xxx.js">', '<script name="xxx.js">', '<script href="">'],
             q4: ['true', 'false'],
@@ -75,16 +75,24 @@ $("document").ready(function () {
             clock.text(this.timer)
             // to prevent timer speed up
             if (!this.timerActive) {
+                console.log(Object.keys(this.questions).length)
+                console.log(Object.keys(this.questions))
                 this.timerId = setInterval(this.clockTicking, 1000);
             }
             // gets all the questions then indexes the current questions
             let questionContent = Object.values(this.questions)[this.current]; //May Need Review
             question.text(questionContent);
             let questionChoices = Object.values(this.choices)[this.current];
+            console.log(questionChoices)
             // creates all the trivia guess options in the html
-            $.each(questionChoices, function (index, key) {
-                choices.append($('<button>' + key + '</button>'));
-            })
+            for (let i = 0; i < questionChoices.length; i++) {
+                choices.append("<button>" + questionChoices[i] + "</button>")
+            }
+
+
+            // $.each(questionChoices, function (index, key) {
+            //     choices.append($('<button>' + key + '</button>'));
+            // })
         },
 
         clockTicking: function () {
@@ -99,29 +107,63 @@ $("document").ready(function () {
             // the time has run out and increment unanswered, run result
             else if (this.timer === -1) {
                 this.unanswered++;
-                this.result = false; //Undefined?
+                this.result = false;
                 clearInterval(this.timerId);
                 resultId = setTimeout(this.guessResult, 1000);
-                results.html('<h3>Out of time! The answer was ' + Object.values(trivia.answers)[trivia.currentSet] + '</h3>');
+                results.html('<h3>Out of time! The answer was ' + Object.values(this.answers)[this.current] + '</h3>');
             }
             // if all the questions have been shown end the game, show results
-            else if (this.current === Object.keys(this.questions).length) {
+            else if (this.current === 8) {
 
                 // adds results of game (correct, incorrect, unanswered) to the page
-                $('#results')
-                    .html('<h3>Thank you for playing!</h3>' +
-                        '<p>Correct: ' + trivia.correct + '</p>' +
-                        '<p>Incorrect: ' + trivia.incorrect + '</p>' +
-                        '<p>Unaswered: ' + trivia.unanswered + '</p>' +
-                        '<p>Please play again!</p>');
+                results.html(
+                    '<h3>Thank you for playing!</h3>' +
+                    '<p>Correct: ' + this.correct + '</p>' +
+                    '<p>Incorrect: ' + this.incorrect + '</p>' +
+                    '<p>Unaswered: ' + this.unanswered + '</p>' +
+                    '<p>Please play again!</p>');
 
                 // hide game sction
-                $('#game').hide();
+                mainW.hide();
 
                 // show start button to begin a new game
-                $('#start').show();
+                startWindow.show();
             }
-        }
+        },
+
+        guessChecker : function() {
+    
+            // timer ID for gameResult setTimeout
+            let resultId;
+            
+            // the answer to the current question being asked
+            let currentAnswer = Object.values(this.answers)[this.current];
+            
+            // if the text of the option picked matches the answer of the current question, increment correct
+            if($(this).text() === currentAnswer){
+              
+              this.correct++;
+              correctNum.text(this.correct)
+              clearInterval(this.timerId);
+              resultId = setTimeout(trivia.guessResult, 1000);
+              results.html('<h3>Correct Answer!</h3>');
+            }
+            // else the user picked the wrong option, increment incorrect
+            else{
+              
+              this.incorrect++;
+              incorrectNum.text(this.incorrect)
+              clearInterval(this.timerId);
+              resultId = setTimeout(this.guessResult, 1000);
+              results.html('<h3>Better luck next time! '+ currentAnswer +'</h3>');
+            }
+          },
+
+
+          guessResult : function(){
+            this.current++;
+            this.next();
+          }
 
     }
 
