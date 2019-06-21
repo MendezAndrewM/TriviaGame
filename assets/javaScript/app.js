@@ -1,6 +1,5 @@
 $("document").ready(function () {
 
-    
     const clock = $("#cD");
     const correctNum = $("#rightA");
     const incorrectNum = $("#wrongA");
@@ -88,11 +87,6 @@ $("document").ready(function () {
             for (let i = 0; i < questionChoices.length; i++) {
                 choices.append("<button>" + questionChoices[i] + "</button>")
             }
-
-
-            // $.each(questionChoices, function (index, key) {
-            //     choices.append($('<button>' + key + '</button>'));
-            // })
         },
 
         clockTicking: function () {
@@ -100,7 +94,6 @@ $("document").ready(function () {
             if (this.timer > -1 && this.current < Object.keys(this.questions).length) {
                 clock.text(this.timer);
                 this.timer--;
-
             }
             // the time has run out and increment unanswered, run result
             else if (this.timer === -1) {

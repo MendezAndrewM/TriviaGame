@@ -1,0 +1,78 @@
+/* Background Gradient Animation */
+body {
+	width: 100wh;
+	height: 90vh;
+	color: #fff;
+	background: linear-gradient(-45deg, rgb(59, 62, 63), rgb(121, 136, 156), rgb(74, 81, 139), rgb(61, 74, 189));
+	background-size: 400% 400%;
+	-webkit-animation: Gradient 15s ease infinite;
+	-moz-animation: Gradient 15s ease infinite;
+	animation: Gradient 15s ease infinite;
+}
+@-webkit-keyframes Gradient {
+	0% {background-position: 0% 50%}
+	50% {background-position: 100% 50%}
+	100% {background-position: 0% 50%}
+}
+@-moz-keyframes Gradient {
+	0% {background-position: 0% 50%}
+	50% {background-position: 100% 50%}
+	100% {background-position: 0% 50%}
+}
+@keyframes Gradient {
+    0% {background-position: 0% 50%}
+	50% {background-position: 100% 50%}
+	100% {background-position: 0% 50%}
+}
+
+
+/* Conatiner (Wrapper) */
+.container {
+    max-width: 960px;
+    margin: 5% 10% 5% 10%;
+    /* padding: 45% 40% 45% 40%;     */
+    align-content: space-around;
+    background-color: rgba(0, 0, 0, 0.418);
+    border: solid 2px black;
+    border-radius: 15px;
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 34px;
+    color: rgb(189, 189, 189);
+    margin: .5em 0 1em 1em;
+
+}
+/* First frame/ Start Button */
+#start {
+    
+}
+#startButton {
+    margin: 1em 40% 3em 40%;
+    padding: .5em 1em .5em 1em;
+    background-color: rgb(34, 54, 92);
+    color: rgb(175, 175, 175);
+    border: solid 1.2px black;
+    border-radius: 5px;   
+}
+#startButton:hover {
+    cursor: pointer;
+    background-color: rgb(53, 85, 143);
+    color: rgb(238, 237, 237);
+    animation: shake 0.42s;
+    animation-iteration-count: infinite;
+}
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
