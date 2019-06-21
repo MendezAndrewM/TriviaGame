@@ -31,10 +31,10 @@ $("document").ready(function () {
             q7: "How do you call a function named 'myFunction'?",
             q8: "How to write an IF statement in JavaScript?",
         },
-        choices: {
-            q1: ['<script>', '<javascript>', '<scripting>', '<js>'],
-            q2: ['In the <head> tag', 'In the <body> tag', 'In the <footer> tag', 'Both A or B'],
-            q3: ['<script src="xxx.js">', '<script name="xxx.js">', '<script href="">'],
+        choices: { //temporarly removing anckle braces because they are not displayed properly with in html stings
+            q1: ['script', 'javascript', 'scripting', 'js'], //[should be: '<script>', '<javascript>', '<scripting>', '<js>']
+            q2: ['In the "head" tag', 'In the "body" tag', 'In the "footer" tag', 'Both A or B'],// ['In the <head> tag', 'In the <body> tag', 'In the <footer> tag', 'Both A or B']
+            q3: ['script src="xxx.js"', 'script name="xxx.js"', 'script href=""'],//['<script src="xxx.js">', '<script name="xxx.js">', '<script href="">']
             q4: ['true', 'false'],
             q5: [' msgBox("Hello World");', ' msg("Hello World");', ' alertBox("Hello World");', 'alert("Hello World");'],
             q6: [' function = myFunction()', ' function:myFunction()', 'function myFunction()'],
@@ -42,9 +42,9 @@ $("document").ready(function () {
             q8: [' if (i == 5)', ' if i = 5', ' if i == 5 then', 'if i = 5 then'],
         },
         answers: {
-            q1: '<script>',
+            q1: 'script', //'<script>'
             q2: 'Both A or B',
-            q3: '<script src="xxx.js">',
+            q3: 'script src="xxx.js"', //'<script src="xxx.js">
             q4: 'false',
             q5: 'alert("Hello World");',
             q6: 'function myFunction()',
@@ -92,34 +92,22 @@ $("document").ready(function () {
             if (this.timer > -1 && this.current < Object.keys(this.questions).length) {
                 clock.text(this.timer);
                 this.timer--;
-                // if (this.timer === 4) {
-                //     $('#timer').addClass('last-seconds');
-                // }
+
             }
             // the time has run out and increment unanswered, run result
             else if (this.timer === -1) {
                 this.unanswered++;
-                this.result = false; //Undefined?
+                this.result = false;
                 clearInterval(this.timerId);
                 resultId = setTimeout(this.guessResult, 1000);
-                results.html('<h3>Out of time! The answer was ' + Object.values(trivia.answers)[trivia.currentSet] + '</h3>');
+                results.html('<h3>Out of time! The answer was ' + Object.values(this.answers)[this.current] + '</h3>');
             }
             // if all the questions have been shown end the game, show results
             else if (this.current === Object.keys(this.questions).length) {
 
-                // adds results of game (correct, incorrect, unanswered) to the page
-                $('#results')
-                    .html('<h3>Thank you for playing!</h3>' +
-                        '<p>Correct: ' + trivia.correct + '</p>' +
-                        '<p>Incorrect: ' + trivia.incorrect + '</p>' +
-                        '<p>Unaswered: ' + trivia.unanswered + '</p>' +
-                        '<p>Please play again!</p>');
-
-                // hide game sction
-                $('#game').hide();
-
-                // show start button to begin a new game
-                $('#start').show();
+                results.show()
+                mainW.hide()
+                startWindow.show()
             }
         }
 
