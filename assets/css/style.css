@@ -46,7 +46,6 @@ h1 {
 }
 /* First frame/ Start Button */
 #start {
-    
 }
 #startButton {
     margin: 1em 40% 3em 40%;
@@ -76,3 +75,5 @@ h1 {
   90% { transform: translate(1px, 2px) rotate(0deg); }
   100% { transform: translate(1px, -2px) rotate(-1deg); }
 }
+
+

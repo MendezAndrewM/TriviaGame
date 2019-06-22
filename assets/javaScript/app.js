@@ -85,7 +85,7 @@ $("document").ready(function () {
             console.log(questionChoices)
             // creates all the trivia guess options in the html
             for (let i = 0; i < questionChoices.length; i++) {
-                choices.append("<button>" + questionChoices[i] + "</button>")
+                choices.append("<button class='option'>" + questionChoices[i] + "</button>")
             }
         },
 
@@ -143,13 +143,17 @@ $("document").ready(function () {
 
           guessResult : function(){
             this.current++;
-            this.next();
+            this.next()
           }
 
     }
 
     $("#startButton").click(function () {
         jsTrivia.Game()
+        $(".option").click(function() {
+            jsTrivia.guessChecker()
+            console.log(this);
+        });
     });
 
 })
