@@ -74,6 +74,15 @@ $(document).ready(function () {
         countdown: function () {
             Game.timeRemaining--;
             $("#timer").text("Time remaining: " + Game.timeRemaining);
+            if (Game.timeRemaining < 15) {
+                $("#timer").addClass('lowTime')
+            }
+            if (Game.timeRemaining < 10) {
+                $("#timer").addClass('lowerTime')
+            }
+            if (Game.timeRemaining < 5) {
+                $("#timer").addClass('veryLowTime')
+            }
             if (Game.timeRemaining === 0) {
                 Game.stopTimer();
                 $("#timer").empty();
