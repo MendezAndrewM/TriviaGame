@@ -1,159 +1,142 @@
-$("document").ready(function () {
-
-    const clock = $("#cD");
-    const correctNum = $("#rightA");
-    const incorrectNum = $("#wrongA");
-    const question = $("#question");
-    const choices = $("#answers");
+$(document).ready(function () {
     const mainW = $("#mainContent");
     const results = $("#results");
     const startWindow = $("#start");
+    const info = $("#info")
+    results.hide()
+    mainW.hide()
     
-    mainW.hide();
-
-    jsTrivia = {
-        correct: 0,
-        incorrect: 0,
-        unanswered: 0,
-        current: 0,
-        timer: 20,
-        timerActive: false,
-        timerId: '',
-
-        questions: {
-            q1: "Inside which HTML element do we put the JavaScript? ",
-            q2: "Where is the correct place to insert a JavaScript?",
-            q3: "What is the correct syntax for referring to an external script called 'xxx.js'?",
-            q4: "The external JavaScript file must contain the <script> tag.",
-            q5: "How do you write 'Hello World' in an alert box?",
-            q6: "How do you create a function in JavaScript?",
-            q7: "How do you call a function named 'myFunction'?",
-            q8: "How to write an IF statement in JavaScript?",
-        },
-        choices: { //temporarly removing anckle braces because they are not displayed properly with in html stings
-            q1: ['script', 'javascript', 'scripting', 'js'], //[should be: '<script>', '<javascript>', '<scripting>', '<js>']
-            q2: ['In the "head" tag', 'In the "body" tag', 'In the "footer" tag', 'Both A or B'],// ['In the <head> tag', 'In the <body> tag', 'In the <footer> tag', 'Both A or B']
-            q3: ['script src="xxx.js"', 'script name="xxx.js"', 'script href=""'],//['<script src="xxx.js">', '<script name="xxx.js">', '<script href="">']
-            q4: ['true', 'false'],
-            q5: [' msgBox("Hello World");', ' msg("Hello World");', ' alertBox("Hello World");', 'alert("Hello World");'],
-            q6: [' function = myFunction()', ' function:myFunction()', 'function myFunction()'],
-            q7: ['call(myFunction)', ' call function myFunction()', 'myFunction()'],
-            q8: [' if (i == 5)', ' if i = 5', ' if i == 5 then', 'if i = 5 then'],
-        },
-        answers: {
-            q1: 'script', //'<script>'
-            q2: 'Both A or B',
-            q3: 'script src="xxx.js"', //'<script src="xxx.js">
-            q4: 'false',
-            q5: 'alert("Hello World");',
-            q6: 'function myFunction()',
-            q7: 'myFunction()',
-            q8: 'if (i == 5)',
-        },
-
-        // Game function
-        Game: function () {
-            // reset varibles
-            this.current = 0;
-            this.correct = 0;
-            this.incorrect = 0;
-            this.unanswered = 0;
-            // reset timer
-            clearInterval(this.timerId);
-            clock.text(this.timer);
-            // change active <div>
-            startWindow.hide()
-            results.hide()
-            mainW.show();
-            this.next()
-        },
-
-        next: function () {
-            // sets timer to 20
-            this.timer = 10;
-            clock.text(this.timer)
-            // to prevent timer speed up
-            if (!this.timerActive) {
-                console.log(Object.keys(this.questions).length)
-                console.log(Object.keys(this.questions))
-                this.timerId = setInterval(this.clockTicking, 1000);
-            }
-            // gets all the questions then indexes the current questions
-            let questionContent = Object.values(this.questions)[this.current]; //May Need Review
-            question.text(questionContent);
-            let questionChoices = Object.values(this.choices)[this.current];
-            console.log(questionChoices)
-            // creates all the trivia guess options in the html
-            for (let i = 0; i < questionChoices.length; i++) {
-                choices.append("<button class='option'>" + questionChoices[i] + "</button>")
-            }
-        },
-
-        clockTicking: function () {
-            // if timer still has time left and there are still questions left to ask
-            if (this.timer > -1 && this.current < Object.keys(this.questions).length) {
-                clock.text(this.timer);
-                this.timer--;
-            }
-            // the time has run out and increment unanswered, run result
-            else if (this.timer === -1) {
-                this.unanswered++;
-                this.result = false;
-                clearInterval(this.timerId);
-                resultId = setTimeout(this.guessResult, 1000);
-                results.html('<h3>Out of time! The answer was ' + Object.values(this.answers)[this.current] + '</h3>');
-            }
-            // if all the questions have been shown end the game, show results
-            else if (this.current === 8) {
-
-                results.show()
-                mainW.hide()
-                startWindow.show()
-            }
-        },
-
-        guessChecker : function() {
-    
-            // timer ID for gameResult setTimeout
-            let resultId;
-            
-            // the answer to the current question being asked
-            let currentAnswer = Object.values(this.answers)[this.current];
-            
-            // if the text of the option picked matches the answer of the current question, increment correct
-            if($(this).text() === currentAnswer){
-              
-              this.correct++;
-              correctNum.text(this.correct)
-              clearInterval(this.timerId);
-              resultId = setTimeout(trivia.guessResult, 1000);
-              results.html('<h3>Correct Answer!</h3>');
-            }
-            // else the user picked the wrong option, increment incorrect
-            else{
-              
-              this.incorrect++;
-              incorrectNum.text(this.incorrect)
-              clearInterval(this.timerId);
-              resultId = setTimeout(this.guessResult, 1000);
-              results.html('<h3>Better luck next time! '+ currentAnswer +'</h3>');
-            }
-          },
-
-
-          guessResult : function(){
-            this.current++;
-            this.next()
-          }
-
-    }
-
     $("#startButton").click(function () {
-        jsTrivia.Game()
-        $(".option").click(function() {
-            jsTrivia.guessChecker()
-            console.log(this);
-        });
+        Game.startTimer()
     });
+    
+    const quiz = [
+        {
+            question: "What is the Jquery equivalent of: 'document.getElementById('llama')' ?",
+            answers: ["$('.llama')", "$('#llama')", "document.querySelector('#llama')"],
+            correct: "$('#llama')"
+        },
+        {
+            question: "Which of the following will replace the contents of am element with an Id of 'hungry'?",
+            answers: ["$('#hungry').append('content')", "document.querySelector('#hungry').prepend('content')", "$('#hungry').text('content')"],
+            correct: "$('#hungry').text('content')"
+        },
+        {
+            question: "Which is the propper way to declare a variable with a value that should never change?",
+            answers: ["const", "var", "let"],
+            correct: "const"
+        },
+        {
+            question: "Which of the following is NOT a JavaScript data type?",
+            answers: ["string", "undefined", "box"],
+            correct: "box"
+        },
+        {
+            question: "What does it mean to be 'Asynchronous'?",
+            answers: ["To be synced up with a database", "to run in an event loop", "to reproduce without a mating pair"],
+            correct: "to run in an event loop"
+        },
+        {
+            question: "What is an 'IIFE'?",
+            answers: ["Immediately Invoked Function Expression", "Inherited Idle Flash Encryption", "A badger with Parkinson's disease "],
+            correct: "Immediately Invoked Function Expression"
+        },
+        {
+            question: "What does an ajax call return",
+            answers: ["a suggestion", "a promise", "a demand"],
+            correct: "a promise"
+        },
+        {
+            question: "Which of the following methods will remove the last element of an array?",
+            answers: ["array.push()", "array.pop()", "array.shift()"],
+            correct: "array.pop()"
+        },
+        {
+            question: "Which of the following will return a boolean value of 'false'",
+            answers: ["1 == '1'", "1 ==='1'", "1 !== '1'"],
+            correct: "1 ==='1'"
+        },
+        {
+            question: "How would you console log the value of the 'name' key in the object: 'nestedObj', which happends to be nested in the object named: 'firstObj'?",
+            answers: ["console.log(firstObj.nestedObj.name);", "console.log(this.nestedObj.name)", "console.log(name);"],
+            correct: "console.log(firstObj.nestedObj.name);"
+        }];
+    
+    Game = {
+        timeRemaining: 60,
+        startTimer: function () {
+            mainW.show()
+            $("#timer").text("Time remaining: " + Game.timeRemaining);
+            setInterval(Game.countdown, 1000);
+            startWindow.hide();
+            jsTrivia.displayQuiz();
+        },
+        countdown: function () {
+            Game.timeRemaining--;
+            $("#timer").text("Time remaining: " + Game.timeRemaining);
+            if (Game.timeRemaining === 0) {
+                Game.stopTimer();
+                $("#timer").empty();
+            }
+        },
+        stopTimer: function () {
+            clearInterval();
+            jsTrivia.checkAnswers();
+        },
+        
+        end: function (numCorrect, numIncorrect, numUnanswered) {
+            info.hide()
+            results.show()
+            $("#rightA").text(numCorrect);
+            $("#wrongA").text(numIncorrect);
+            $("#unanswered").text(numUnanswered);
+            $("#timeLeft").text(this.timeRemaining);
+            // Try Again button not working
+            results.append('<button id="tryAgain">Try Again</button>')
+            $("#tryAgain").on('click', this.startTimer());
 
-})
+        }
+    };
+
+    const jsTrivia = {
+
+        displayQuiz: function () {
+            const divContainer = $("#questionBox");
+            for (let i = 0; i < quiz.length; i++) {
+                divContainer.append('<div id="question">' + quiz[i].question + '</div>');
+                const answer1 = quiz[i].answers[0];
+                const answer2 = quiz[i].answers[1];
+                const answer3 = quiz[i].answers[2];
+                divContainer.append('<div class="form-check"><input type="radio" name="radio-group' + i + '" id="radio' + i + '"><label id="radio' + i + 'label" for="radio' + i + '">' + answer1 + '</label></div>');
+                divContainer.append('<div class="form-check"><input type="radio" name="radio-group' + i + '" id="radio' + i + '"><label id="radio' + i + 'label" for="radio' + i + '">' + answer2 + '</label></div>');
+                divContainer.append('<div class="form-check"><input type="radio" name="radio-group' + i + '" id="radio' + i + '"><label id="radio' + i + 'label" for="radio' + i + '">' + answer3 + '</label></div>');
+            };
+            const doneButton = '<button id="done-button" type="submit">Submit</button>';
+            divContainer.append(doneButton);
+            $("#done-button").on("click", Game.stopTimer);
+        },
+
+        checkAnswers: function () {
+            let correctAnswer;
+            let userAnswer;
+            let numCorrect = 0;
+            let numIncorrect = 0;
+            let numUnanswered = 0;
+
+            for (let i = 0; i < quiz.length; i++) {
+                correctAnswer = quiz[i].correct;
+                userAnswer = $('input[id=radio' + i + ']:checked + label').text();
+                if (userAnswer === correctAnswer) {
+                    numCorrect++;
+                } else if (userAnswer === "") {
+                    numUnanswered++;
+                } else if (userAnswer !== correctAnswer) {
+                    {
+                        numIncorrect++;
+                    }
+                }
+            }
+            Game.end(numCorrect, numIncorrect, numUnanswered);
+        }
+    }
+});
