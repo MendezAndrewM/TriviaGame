@@ -1,15 +1,17 @@
 $(document).ready(function () {
+    // Assign html elements to variables
     const mainW = $("#mainContent");
     const results = $("#results");
     const startWindow = $("#start");
     const info = $("#info")
+    // only show the start page
     results.hide()
     mainW.hide()
     
     $("#startButton").click(function () {
         Game.startTimer()
     });
-    
+    // Questions and answers
     const quiz = [
         {
             question: "What is the Jquery equivalent of: 'document.getElementById('llama')' ?",
@@ -61,9 +63,11 @@ $(document).ready(function () {
             answers: ["console.log(firstObj.nestedObj.name);", "console.log(this.nestedObj.name)", "console.log(name);"],
             correct: "console.log(firstObj.nestedObj.name);"
         }];
-    
+    // Functions to control the flow of the game
     Game = {
+        // set timer starting value
         timeRemaining: 60,
+        // when Start button is clicked, start timer and initiate game
         startTimer: function () {
             mainW.show()
             $("#timer").text("Time remaining: " + Game.timeRemaining);
@@ -71,6 +75,7 @@ $(document).ready(function () {
             startWindow.hide();
             jsTrivia.displayQuiz();
         },
+        // if statements for countdown
         countdown: function () {
             Game.timeRemaining--;
             $("#timer").text("Time remaining: " + Game.timeRemaining);
@@ -88,11 +93,12 @@ $(document).ready(function () {
                 $("#timer").empty();
             }
         },
+        // function to stop the timer
         stopTimer: function () {
             clearInterval();
             jsTrivia.checkAnswers();
         },
-        
+        // At the end of the game, show results page
         end: function (numCorrect, numIncorrect, numUnanswered) {
             info.hide()
             results.show()
@@ -101,14 +107,15 @@ $(document).ready(function () {
             $("#unanswered").text(numUnanswered);
             $("#timeLeft").text(this.timeRemaining);
             // Try Again button not working
+            // also, for some reason, after a few seconds, another button appears
             results.append('<button id="tryAgain">Try Again</button>')
             $("#tryAgain").on('click', this.startTimer());
 
         }
     };
-
+    //object to display questions and calculate user responses
     const jsTrivia = {
-
+        //Display questions and answers to the page
         displayQuiz: function () {
             const divContainer = $("#questionBox");
             for (let i = 0; i < quiz.length; i++) {
@@ -120,11 +127,12 @@ $(document).ready(function () {
                 divContainer.append('<div class="form-check"><input type="radio" name="radio-group' + i + '" id="radio' + i + '"><label id="radio' + i + 'label" for="radio' + i + '">' + answer2 + '</label></div>');
                 divContainer.append('<div class="form-check"><input type="radio" name="radio-group' + i + '" id="radio' + i + '"><label id="radio' + i + 'label" for="radio' + i + '">' + answer3 + '</label></div>');
             };
+            // creates a submit button to end the game
             const doneButton = '<button id="done-button" type="submit">Submit</button>';
             divContainer.append(doneButton);
             $("#done-button").on("click", Game.stopTimer);
         },
-
+        // when submit button is clicked, determine score
         checkAnswers: function () {
             let correctAnswer;
             let userAnswer;
