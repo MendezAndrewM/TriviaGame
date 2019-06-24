@@ -19,7 +19,7 @@ Click this link to play: https://mendezandrewm.github.io/TriviaGame/
 
 - When complete, your total score will be displayed.
 
-![Image of Results Page](asstes/images/end.PNG)
+![Image of Results Page](assets/images/end.PNG)
 
 - fully functioning try-again button coming soon..
 
